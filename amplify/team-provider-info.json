@@ -1,0 +1,106 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-johndeere-staging-152031-authRole",
+      "UnauthRoleArn": "arn:aws:iam::302944701803:role/amplify-johndeere-staging-152031-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::302944701803:role/amplify-johndeere-staging-152031-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-johndeere-staging-152031-deployment",
+      "UnauthRoleName": "amplify-johndeere-staging-152031-unauthRole",
+      "StackName": "amplify-johndeere-staging-152031",
+      "StackId": "arn:aws:cloudformation:us-east-1:302944701803:stack/amplify-johndeere-staging-152031/529d5e20-0c2d-11ed-a985-0aedfad26e5f",
+      "AmplifyAppId": "dyufpw1zjejj6"
+    },
+    "categories": {
+      "function": {
+        "listOrganizations": {
+          "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
+          "s3Key": "amplify-builds/listOrganizations-7a7a5a4d47736d4c6b32-build.zip"
+        },
+        "listClients": {
+          "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
+          "s3Key": "amplify-builds/listClients-36796b5a747278554745-build.zip"
+        },
+        "getClient": {
+          "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
+          "s3Key": "amplify-builds/getClient-6a6f355944554f31446c-build.zip"
+        },
+        "listFields": {
+          "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
+          "s3Key": "amplify-builds/listFields-784e6645475a56312f4e-build.zip"
+        },
+        "getField": {
+          "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
+          "s3Key": "amplify-builds/getField-6f7a54724a6e646a3541-build.zip"
+        },
+        "getBoundary": {
+          "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
+          "s3Key": "amplify-builds/getBoundary-586666634d424a466f34-build.zip"
+        },
+        "autenticationDeere": {
+          "clientSecret": "c88ea1ff782f4206aaf1eb39e7b4a755",
+          "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
+          "s3Key": "amplify-builds/autenticationDeere-6b4b38326b4f72546e51-build.zip"
+        },
+        "functionsDeereApi": {
+          "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
+          "s3Key": "amplify-builds/functionsDeereApi-374d3764635362486252-build.zip",
+          "authorization": "Bearer eyJraWQiOiJFRm5BQWw5SE5xQm02LXQ1ZHJWWFB3dzg3ZWEzSndhRkUyQTVaM2xpNjIwIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULjlPM011b1lxNWc0U0RMcXhNeXpWMW01aHJ3SWRZWWRDWEI3VlAwTnI2dnMub2FybDd3eXE3ZVFJd0VjNTk1ZDYiLCJpc3MiOiJodHRwczovL3NpZ25pbi5qb2huZGVlcmUuY29tL29hdXRoMi9hdXM3OHRubGF5c01yYUZoQzF0NyIsImF1ZCI6ImNvbS5kZWVyZS5pc2cuYXhpb20iLCJpYXQiOjE2NTk0NDc3NjQsImV4cCI6MTY1OTQ5MDk2NCwiY2lkIjoiMG9hNWF4MjMwd29aM0MydU41ZDciLCJ1aWQiOiIwMHU1YXJmcDl2OFNPV3FSMTVkNyIsInNjcCI6WyJhZzIiLCJhZzEiLCJmaWxlcyIsIm9mZmxpbmVfYWNjZXNzIiwiYWczIiwib3JnMSIsIm9yZzIiLCJlcTIiLCJlcTEiXSwiYXV0aF90aW1lIjoxNjU5NDQ3NzYxLCJzdWIiOiJqdWxpYW5tYXJzYWwiLCJ1c2VyVHlwZSI6IkN1c3RvbWVyIn0.JajFELoahJ1LNvmti0918ZQpu2KTAoT9lR6cdEpFpuWbHXSy2Eef-d2CosLmd1LvLLSiZfX_Ylb_4VXdoUhZOZkLAFpCbNOVh35yp2Ceuy1acyE14oUU0pG6fADj9eZ0twYFdvo3r_nCUpmewUzFHME2LxpiGWdJR67R0GmD-9m_VsZTNws0u26MpP8jG8egqTax9Dm8N5431UXY5r-k2M50PPadWBoTLWHA5m9xh52MF16ZWQvIsQMrxaJwVsNe8wgxI8I7qkaslufLLRljzKgVjJgbnt5__3LojiGb0uil0yh0SI8UJ95Aonj1w_CnVC6EhXVzgbwPxbtgzbgTsg"
+        },
+        "getAuthorizationToken": {
+          "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
+          "s3Key": "amplify-builds/getAuthorizationToken-74674f482f4d42456e54-build.zip"
+        }
+      }
+    }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-johndeere-dev-164000-authRole",
+      "UnauthRoleArn": "arn:aws:iam::302944701803:role/amplify-johndeere-dev-164000-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::302944701803:role/amplify-johndeere-dev-164000-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-johndeere-dev-164000-deployment",
+      "UnauthRoleName": "amplify-johndeere-dev-164000-unauthRole",
+      "StackName": "amplify-johndeere-dev-164000",
+      "StackId": "arn:aws:cloudformation:us-east-1:302944701803:stack/amplify-johndeere-dev-164000/98134f40-0c51-11ed-98f0-120319b93ddd",
+      "AmplifyAppId": "dyufpw1zjejj6"
+    },
+    "categories": {
+      "function": {
+        "listFarms": {
+          "deploymentBucketName": "amplify-johndeere-dev-164000-deployment",
+          "s3Key": "amplify-builds/listFarms-507a76546a56636c7767-build.zip"
+        },
+        "getFarm": {
+          "deploymentBucketName": "amplify-johndeere-dev-164000-deployment",
+          "s3Key": "amplify-builds/getFarm-3531387a46354750794b-build.zip"
+        },
+        "getClient": {
+          "deploymentBucketName": "amplify-johndeere-dev-164000-deployment",
+          "s3Key": "amplify-builds/getClient-435a736f6e5855735874-build.zip"
+        },
+        "getField": {
+          "deploymentBucketName": "amplify-johndeere-dev-164000-deployment",
+          "s3Key": "amplify-builds/getField-3142333371344a71467a-build.zip"
+        },
+        "listFields": {
+          "deploymentBucketName": "amplify-johndeere-dev-164000-deployment",
+          "s3Key": "amplify-builds/listFields-695576756f62782f5a7a-build.zip"
+        },
+        "getBoundary": {
+          "deploymentBucketName": "amplify-johndeere-dev-164000-deployment",
+          "s3Key": "amplify-builds/getBoundary-34575a3331654b715678-build.zip"
+        },
+        "listOrganizations": {
+          "deploymentBucketName": "amplify-johndeere-dev-164000-deployment",
+          "s3Key": "amplify-builds/listOrganizations-495a446e6e663977454a-build.zip"
+        },
+        "listClients": {
+          "deploymentBucketName": "amplify-johndeere-dev-164000-deployment",
+          "s3Key": "amplify-builds/listClients-61564171326c4e4a766f-build.zip"
+        }
+      }
+    }
+  }
+}
