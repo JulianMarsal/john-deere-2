@@ -7,24 +7,6 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "function": {
-        "listClients": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "getClient": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "getBoundary": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
         "autenticationDeere": {
             "Name": "string",
             "Arn": "string",

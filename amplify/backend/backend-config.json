@@ -18,21 +18,6 @@
     }
   },
   "function": {
-    "listClients": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "getClient": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "getBoundary": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "autenticationDeere": {
       "build": true,
       "providerPlugin": "awscloudformation",
