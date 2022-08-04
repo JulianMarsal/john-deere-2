@@ -13,10 +13,6 @@
     },
     "categories": {
       "function": {
-        "listOrganizations": {
-          "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
-          "s3Key": "amplify-builds/listOrganizations-7a7a5a4d47736d4c6b32-build.zip"
-        },
         "listClients": {
           "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
           "s3Key": "amplify-builds/listClients-36796b5a747278554745-build.zip"
@@ -24,14 +20,6 @@
         "getClient": {
           "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
           "s3Key": "amplify-builds/getClient-6a6f355944554f31446c-build.zip"
-        },
-        "listFields": {
-          "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
-          "s3Key": "amplify-builds/listFields-784e6645475a56312f4e-build.zip"
-        },
-        "getField": {
-          "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
-          "s3Key": "amplify-builds/getField-6f7a54724a6e646a3541-build.zip"
         },
         "getBoundary": {
           "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
@@ -44,8 +32,8 @@
         },
         "functionsDeereApi": {
           "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",
-          "s3Key": "amplify-builds/functionsDeereApi-374d3764635362486252-build.zip",
-          "authorization": "Bearer eyJraWQiOiJFRm5BQWw5SE5xQm02LXQ1ZHJWWFB3dzg3ZWEzSndhRkUyQTVaM2xpNjIwIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULjlPM011b1lxNWc0U0RMcXhNeXpWMW01aHJ3SWRZWWRDWEI3VlAwTnI2dnMub2FybDd3eXE3ZVFJd0VjNTk1ZDYiLCJpc3MiOiJodHRwczovL3NpZ25pbi5qb2huZGVlcmUuY29tL29hdXRoMi9hdXM3OHRubGF5c01yYUZoQzF0NyIsImF1ZCI6ImNvbS5kZWVyZS5pc2cuYXhpb20iLCJpYXQiOjE2NTk0NDc3NjQsImV4cCI6MTY1OTQ5MDk2NCwiY2lkIjoiMG9hNWF4MjMwd29aM0MydU41ZDciLCJ1aWQiOiIwMHU1YXJmcDl2OFNPV3FSMTVkNyIsInNjcCI6WyJhZzIiLCJhZzEiLCJmaWxlcyIsIm9mZmxpbmVfYWNjZXNzIiwiYWczIiwib3JnMSIsIm9yZzIiLCJlcTIiLCJlcTEiXSwiYXV0aF90aW1lIjoxNjU5NDQ3NzYxLCJzdWIiOiJqdWxpYW5tYXJzYWwiLCJ1c2VyVHlwZSI6IkN1c3RvbWVyIn0.JajFELoahJ1LNvmti0918ZQpu2KTAoT9lR6cdEpFpuWbHXSy2Eef-d2CosLmd1LvLLSiZfX_Ylb_4VXdoUhZOZkLAFpCbNOVh35yp2Ceuy1acyE14oUU0pG6fADj9eZ0twYFdvo3r_nCUpmewUzFHME2LxpiGWdJR67R0GmD-9m_VsZTNws0u26MpP8jG8egqTax9Dm8N5431UXY5r-k2M50PPadWBoTLWHA5m9xh52MF16ZWQvIsQMrxaJwVsNe8wgxI8I7qkaslufLLRljzKgVjJgbnt5__3LojiGb0uil0yh0SI8UJ95Aonj1w_CnVC6EhXVzgbwPxbtgzbgTsg"
+          "s3Key": "amplify-builds/functionsDeereApi-687848544d79476d6c2b-build.zip",
+          "authorization": "Bearer eyJraWQiOiJFRm5BQWw5SE5xQm02LXQ1ZHJWWFB3dzg3ZWEzSndhRkUyQTVaM2xpNjIwIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULjg2YWg0QTJCS1NzbWVqeWFOU1RnQVVxOGVlRWtONFVibUFBNE9RTWtsMDQub2FybGNrczZsZFRjcnBiTkk1ZDYiLCJpc3MiOiJodHRwczovL3NpZ25pbi5qb2huZGVlcmUuY29tL29hdXRoMi9hdXM3OHRubGF5c01yYUZoQzF0NyIsImF1ZCI6ImNvbS5kZWVyZS5pc2cuYXhpb20iLCJpYXQiOjE2NTk2MjgyNTIsImV4cCI6MTY1OTY3MTQ1MiwiY2lkIjoiMG9hNWF4MjMwd29aM0MydU41ZDciLCJ1aWQiOiIwMHU1YXJmcDl2OFNPV3FSMTVkNyIsInNjcCI6WyJhZzIiLCJhZzEiLCJmaWxlcyIsIm9mZmxpbmVfYWNjZXNzIiwiYWczIiwib3JnMSIsIm9yZzIiLCJlcTIiLCJlcTEiXSwiYXV0aF90aW1lIjoxNjU5NjI4MjQ4LCJzdWIiOiJqdWxpYW5tYXJzYWwiLCJ1c2VyVHlwZSI6IkN1c3RvbWVyIn0.g3PJrJUolWksWnlsQSEA8MRlHGyvql-_r6Ja35Ej04hqpmKnbrh9AmNLex2kaBogH-V8hlWEZxdn8mK6yYAQclYic1TqwJLk3t8yWFTvkPFEpLU1VK0js87E8acxsc2hT8wUbq4EHdJPT-Jxy9kRSRgSC4PE8HmK2v5sB1IFvTmDpqKnvM3gIw94lM7VmwMRQftyBUadgDsicNIaizndnIDjGc0BznjAdtJ57Z5-MrFcmv1j7_-C_QhvnstrU32o4oo4k_BzEFZUeAwBceQ0YnL_OFsZxRZEuah_ues3JvDlDARWbxYLe8uqqPFrhPr0DftwdyDjKGU_AmRGYAwJgA"
         },
         "getAuthorizationToken": {
           "deploymentBucketName": "amplify-johndeere-staging-152031-deployment",

@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
 import './App.css';
-import { OauthPopup } from "react-oauth-popup";
+//import { OauthPopup } from "react-oauth-popup";
 //const axios = require('axios');
 
 
@@ -49,13 +49,13 @@ const onClose = () => console.log("closed!");
 
 function App() {
 
-  <OauthPopup
-    url="http://FriendlyMultiNationalTechConglomerate.com"
-    onCode={onCode}
-    onClose={onClose}
-  >
-    <div>Click me to open a Popup</div>
-  </OauthPopup>
+  // <OauthPopup
+  //   url="http://FriendlyMultiNationalTechConglomerate.com"
+  //   onCode={onCode}
+  //   onClose={onClose}
+  // >
+  //   <div>Click me to open a Popup</div>
+  // </OauthPopup>
 
   const { data, loading, error } = useQuery(FILMS_QUERY);
 

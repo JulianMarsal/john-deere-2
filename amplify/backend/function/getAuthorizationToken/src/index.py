@@ -1,12 +1,23 @@
 import json
 import requests
+import logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 def handler(event, context):
-    #code = event['arguments']['code']
-    code = event["multiValueQueryStringParameters"]["code"][0]
-    print("codigo :")
-    print(code)
+
+    try:
+        code = event["multiValueQueryStringParameters"]["code"][0]
+        # code = event['arguments']['code']
+    except Exception as e:
+        logger.debug("Error getting code in: " + str(e))
+        logger.error(e)
+        return {
+            'statusCode': 400,
+            'body': {"error": "The multiValueQueryStringParameter not have a code param in it"}
+        }
 
     headers = {
         'Accept': 'application/json',

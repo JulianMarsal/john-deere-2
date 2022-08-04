@@ -18,27 +18,12 @@
     }
   },
   "function": {
-    "listOrganizations": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "listClients": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
     "getClient": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "listFields": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "getField": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
