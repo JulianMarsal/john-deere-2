@@ -101,8 +101,12 @@ export const getField = /* GraphQL */ `
   }
 `;
 export const getBoundary = /* GraphQL */ `
-  query GetBoundary($organizationId: ID!, $fieldId: ID!) {
-    getBoundary(organizationId: $organizationId, fieldId: $fieldId) {
+  query GetBoundary($organizationId: ID!, $fieldId: ID!, $boundaryId: ID!) {
+    getBoundary(
+      organizationId: $organizationId
+      fieldId: $fieldId
+      boundaryId: $boundaryId
+    ) {
       type
       name
       sourceType
@@ -148,7 +152,144 @@ export const autenticationDeere = /* GraphQL */ `
   }
 `;
 export const getAuthorizationToken = /* GraphQL */ `
-  query GetAuthorizationToken($code: String!) {
-    getAuthorizationToken(code: $code)
+  query GetAuthorizationToken($code: String!, $callback: String) {
+    getAuthorizationToken(code: $code, callback: $callback)
+  }
+`;
+export const listMachines = /* GraphQL */ `
+  query ListMachines($organizationId: ID!) {
+    listMachines(organizationId: $organizationId) {
+      type
+      visualizationCategory
+      machineCategories
+      telematicsState
+      capabilities
+      terminals
+      displays
+      guid
+      contributionDefinitionID
+      id
+      name
+      equipmentMake
+      equipmentType
+      equipmentApexType
+      equipmentModel
+      isSerialNumberCertified
+      links {
+        rel
+        uri
+      }
+    }
+  }
+`;
+export const listFiles = /* GraphQL */ `
+  query ListFiles {
+    listFiles {
+      name
+      type
+      createdTime
+      modifiedTime
+      nativeSize
+      source
+      transferPending
+      visibleViaShare
+      shared
+      new
+      status
+      archived
+      format
+      manufacturer
+      delayProcessing
+      id
+      links {
+        rel
+        uri
+      }
+    }
+  }
+`;
+export const listOrganizationFiles = /* GraphQL */ `
+  query ListOrganizationFiles($organizationId: ID!) {
+    listOrganizationFiles(organizationId: $organizationId) {
+      name
+      type
+      createdTime
+      modifiedTime
+      nativeSize
+      source
+      transferPending
+      visibleViaShare
+      shared
+      new
+      status
+      archived
+      format
+      manufacturer
+      delayProcessing
+      id
+      links {
+        rel
+        uri
+      }
+    }
+  }
+`;
+export const getFile = /* GraphQL */ `
+  query GetFile($fileId: ID!) {
+    getFile(fileId: $fileId) {
+      name
+      type
+      createdTime
+      modifiedTime
+      nativeSize
+      source
+      transferPending
+      visibleViaShare
+      shared
+      new
+      status
+      archived
+      format
+      manufacturer
+      delayProcessing
+      id
+      links {
+        rel
+        uri
+      }
+    }
+  }
+`;
+export const getUserToken = /* GraphQL */ `
+  query GetUserToken($id: ID!) {
+    getUserToken(id: $id) {
+      id
+      userId
+      provider
+      name
+      value
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUserTokens = /* GraphQL */ `
+  query ListUserTokens(
+    $filter: ModelUserTokenFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserTokens(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userId
+        provider
+        name
+        value
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
   }
 `;

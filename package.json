@@ -1,8 +1,10 @@
 {
   "name": "john-deere-2",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "proxy": "http://localhost:3000/",
   "dependencies": {
+    "@auth0/auth0-react": "^1.10.2",
     "@apollo/client": "^3.6.9",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",

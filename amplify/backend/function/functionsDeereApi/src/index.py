@@ -13,12 +13,11 @@ def listClients(organizationID, header):
     response = requests.get("https://sandboxapi.deere.com/platform/organizations/" +
                             organizationID+"/clients", headers=header).json()
     # Check if the response is right
-    try:
-        if (response["faultcode"] is not None):
-            logger.error("Error in response: " + response)
-            return None
-    except:
-        pass
+
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
+
     clientList = []
     for cliente in response["values"]:
         clientDict = {}
@@ -43,12 +42,9 @@ def getClient(organizationID, clientID, header):
                             organizationID+"/clients/"+clientID, headers=header).json()
 
     # Check if the response is right
-    try:
-        if (response["faultcode"] is not None):
-            logger.error("Error in response: " + response)
-            return None
-    except:
-        pass
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
 
     clientDict = {}
     clientDict.update({"name": response["name"]})
@@ -66,12 +62,9 @@ def listFields(organizationID, header):
                             organizationID+"/fields", headers=header).json()
 
     # Check if the response is right
-    try:
-        if (response["faultcode"] is not None):
-            logger.error("Error in response: " + response)
-            return None
-    except:
-        pass
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
 
     fieldList = []
     for field in response["values"]:
@@ -91,23 +84,17 @@ def listFields(organizationID, header):
 def getField(organizationID, fieldID, header):
 
     # Check if the fieldID parameter is not empty
-    try:
-        if (response["faultcode"] is not None):
-            logger.error(response)
-            return None
-    except:
-        pass
+    if (fieldID == ""):
+        logger.error("The fieldID cannot be empty")
+        return None
 
     response = requests.get("https://sandboxapi.deere.com/platform/organizations/" +
                             organizationID+"/fields/"+fieldID, headers=header).json()
 
     # Check if the response is right
-    try:
-        if (response["faultcode"] is not None):
-            logger.error("Error in response: " + response)
-            return None
-    except:
-        pass
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
 
     fieldDict = {}
     fieldDict["type"] = response["@type"]
@@ -121,7 +108,7 @@ def getField(organizationID, fieldID, header):
     return fieldDict
 
 
-def getBoundary(organizationID, fieldID, header):
+def getBoundary(organizationID, fieldID, boundaryID, header):
 
     # Check if the fieldID parameter is not empty
     if (fieldID == ""):
@@ -129,33 +116,26 @@ def getBoundary(organizationID, fieldID, header):
         return None
 
     response = requests.get("https://sandboxapi.deere.com/platform/organizations/" +
-                            organizationID+"/fields/"+fieldID+"/    ", headers=header, auth={}).json()
+                            organizationID+"/fields/"+fieldID+"/boundaries/" + boundaryID, headers=header).json()
 
     # Check if the response is right
-    try:
-        if (response["faultcode"] is not None):
-            logger.error("Error in response: " + response)
-            return None
-    except:
-        pass
-
-    name = response["values"][0]["name"]
-    Type = response["values"][0]["@type"]
-    area = response["values"][0]["area"]
-    workeableArea = response["values"][0]["workableArea"]
-    sourceType = response["values"][0]["sourceType"]
-    multipolygons = response["values"][0]["multipolygons"]
-    extent = response["values"][0]["extent"]
-    active = response["values"][0]["active"]
-    archived = response["values"][0]["archived"]
-    Id = response["values"][0]["id"]
-    modifiedTime = response["values"][0]["modifiedTime"]
-    createdTime = response["values"][0]["createdTime"]
-    irrigated = response["values"][0]["irrigated"]
-    if (response["total"] == 0):
-        # "No boundaries found"
-        logger.debug("No boundaries found")
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
         return None
+
+    name = response["name"]
+    Type = response["@type"]
+    area = response["area"]
+    workeableArea = response["workableArea"]
+    sourceType = response["sourceType"]
+    multipolygons = response["multipolygons"]
+    extent = response["extent"]
+    active = response["active"]
+    archived = response["archived"]
+    Id = response["id"]
+    modifiedTime = response["modifiedTime"]
+    createdTime = response["createdTime"]
+    irrigated = response["irrigated"]
 
     boundaryDict = {
         "type": Type,
@@ -177,16 +157,21 @@ def getBoundary(organizationID, fieldID, header):
 
 
 def listOrganizations(header):
+    print("Variable de Auth: ")
+    print(os.environ['Authorization'])
     response = requests.get(
         "https://sandboxapi.deere.com/platform/organizations/", headers=header).json()
 
     # Check if the response is right
-    try:
-        if (response["faultcode"] is not None):
-            logger.error("Error in response: " + response)
-            return None
-    except:
-        pass
+    # try:
+    #     if (response["faultcode"] is not None):
+    #         logger.error("Error in response: " + response)
+    #         return None
+    # except:
+    #     pass
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
 
     organizationList = []
     try:
@@ -215,12 +200,9 @@ def listFarms(organizationID, header):
                             organizationID+"/farms", headers=header).json()
 
     # Check if the response is right
-    try:
-        if (response["faultcode"] is not None):
-            logger.error("Error in response: " + response)
-            return None
-    except:
-        pass
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
 
     farmList = []
     for farm in response["values"]:
@@ -229,15 +211,20 @@ def listFarms(organizationID, header):
         archived = farm["archived"]
         farmId = farm["id"]
         farmLinks = []
+        clientUri = ""
+        internal = ""
         for link in farm["links"]:
             farmLinks.append(link)
+        print("")
 
         farmDict = {
             "type": farmType,
             "name": name,
             "archived": archived,
             "id": farmId,
-            "links": farmLinks
+            "links": farmLinks,
+            "clientUri": clientUri,
+            "internal": internal
         }
         farmList.append(farmDict)
     return farmList
@@ -254,12 +241,9 @@ def getFarm(organizationID, farmID, header):
                             organizationID+"/farms/"+farmID, headers=header).json()
 
     # Check if the response is right
-    try:
-        if (response["faultcode"] is not None):
-            logger.error("Error in response: " + response)
-            return None
-    except:
-        pass
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
 
     farmType = response["@type"]
     name = response["name"]
@@ -279,6 +263,158 @@ def getFarm(organizationID, farmID, header):
     return farmDict
 
 
+def listMachines(organizationID, header):
+    response = requests.get("https://sandboxapi.deere.com/platform/organizations/" +
+                            organizationID+"/machines", headers=header).json()
+
+    # Check if the response is right
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
+
+    MachineList = []
+    for machine in response["values"]:
+        machineDict = {}
+        # ver que onda esta nomenglatura
+        machineDict["type"] = machine["@type"]
+        machineDict["visualizationCategory"] = machine["visualizationCategory"]
+        machineDict["machineCategories"] = machine["machineCategories"]
+        machineDict["telematicsState"] = machine["telematicsState"]
+        machineDict["capabilities"] = machine["capabilities"]
+        machineDict["terminals"] = machine["terminals"]
+        machineDict["displays"] = machine["displays"]
+        machineDict["guid"] = machine["GUID"]
+        machineDict["contributionDefinitionID"] = machine["contributionDefinitionID"]
+        machineDict["id"] = machine["id"]
+        machineDict["name"] = machine["name"]
+        machineDict["equipmentMake"] = machine["equipmentMake"]
+        machineDict["equipmentType"] = machine["equipmentType"]
+        machineDict["equipmentApexType"] = machine["equipmentApexType"]
+        machineDict["equipmentModel"] = machine["equipmentModel"]
+        machineDict["isSerialNumberCertified"] = machine["isSerialNumberCertified"]
+        machineLinks = []
+        for link in machine["links"]:
+            machineLinks.append(link)
+        machineDict["links"] = machine["links"]
+        MachineList.append(machineDict)
+
+    Type = "String"
+    visualizationCategory = "String"
+    machineCategories = "AWSJSON"
+    telematicsState = "String"
+    capabilities = "String"  # Este es una lista de anda a saber que
+    terminals = "AWSJSON"
+    displays = "AWSJSON"
+    guid = "String"  # GuID
+    contributionDefinitionID = "ID"  # O string, anda a saber
+    Id = "ID"
+    name = "String"
+    equipmentMake = "AWSJSON"
+    equipmentType = "AWSJSON"
+    equipmentApexType = "AWSJSON"
+    equipmentModel = "AWSJSON"
+    isSerialNumberCertified = "Boolean"
+    links = "[Link]"
+    return MachineList
+
+
+def getFile(fileID, header):
+    response = requests.get("https://sandboxapi.deere.com/platform/files/" +
+                            fileID, headers=header).json()
+
+    # Check if the response is right
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
+
+    fileDict = {}
+    fileDict["name"] = response["name"]
+    fileDict["type"] = response["type"]
+    fileDict["createdTime"] = response["createdTime"]
+    fileDict["modifiedTime"] = response["modifiedTime"]
+    fileDict["nativeSize"] = response["nativeSize"]
+    fileDict["source"] = response["source"]
+    fileDict["transferPending"] = response["transferPending"]
+    fileDict["visibleViaShare"] = response["visibleViaShare"]
+    fileDict["shared"] = response["shared"]
+    fileDict["new"] = response["new"]
+    fileDict["status"] = response["status"]
+    fileDict["archived"] = response["archived"]
+    fileDict["format"] = response["format"]
+    fileDict["manufacturer"] = response["manufacturer"]
+    fileDict["delayProcessing"] = response["delayProcessing"]
+    fileDict["id"] = response["id"]
+    fileDict["links"] = response["links"]
+    return fileDict
+
+
+def listFiles(header):
+    response = requests.get(
+        "https://sandboxapi.deere.com/platform/files", headers=header).json()
+    # Check if the response is right
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
+
+    fileList = []
+    for fileItem in response["values"]:
+        fileDict = {}
+        fileDict["name"] = fileItem["name"]
+        fileDict["type"] = fileItem["type"]
+        fileDict["createdTime"] = fileItem["createdTime"]
+        fileDict["modifiedTime"] = fileItem["modifiedTime"]
+        fileDict["nativeSize"] = fileItem["nativeSize"]
+        fileDict["source"] = fileItem["source"]
+        fileDict["transferPending"] = fileItem["transferPending"]
+        fileDict["visibleViaShare"] = fileItem["visibleViaShare"]
+        fileDict["shared"] = fileItem["shared"]
+        fileDict["new"] = fileItem["new"]
+        fileDict["status"] = fileItem["status"]
+        fileDict["archived"] = fileItem["archived"]
+        fileDict["format"] = fileItem["format"]
+        fileDict["manufacturer"] = fileItem["manufacturer"]
+        fileDict["delayProcessing"] = fileItem["delayProcessing"]
+        fileDict["id"] = fileItem["id"]
+        fileDict["links"] = fileItem["links"]
+        fileList.append(fileDict)
+
+    return fileList
+
+
+def listOrganizationFiles(organizationID, header):
+    response = requests.get("https://sandboxapi.deere.com/platform/organizations/" +
+                            organizationID+"/files", headers=header).json()
+
+    # Check if the response is right
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
+
+    fileList = []
+    for fileItem in response["values"]:
+        fileDict = {}
+        fileDict["name"] = fileItem["name"]
+        fileDict["type"] = fileItem["type"]
+        fileDict["createdTime"] = fileItem["createdTime"]
+        fileDict["modifiedTime"] = fileItem["modifiedTime"]
+        fileDict["nativeSize"] = fileItem["nativeSize"]
+        fileDict["source"] = fileItem["source"]
+        fileDict["transferPending"] = fileItem["transferPending"]
+        fileDict["visibleViaShare"] = fileItem["visibleViaShare"]
+        fileDict["shared"] = fileItem["shared"]
+        fileDict["new"] = fileItem["new"]
+        fileDict["status"] = fileItem["status"]
+        fileDict["archived"] = fileItem["archived"]
+        fileDict["format"] = fileItem["format"]
+        fileDict["manufacturer"] = fileItem["manufacturer"]
+        fileDict["delayProcessing"] = fileItem["delayProcessing"]
+        fileDict["id"] = fileItem["id"]
+        fileDict["links"] = fileItem["links"]
+        fileList.append(fileDict)
+
+    return fileList
+
+
 def handler(event, context):
     try:
         authorization = os.environ['Authorization']
@@ -294,8 +430,8 @@ def handler(event, context):
 
     query = event["fieldName"]
     print("query: " + query)
-    if (query != "listOrganizations"):
-        organizationId = event['arguments']['organizationId']
+    if (query != "getFile" and query != "listOrganizations" and query != "listFiles"):
+        organizationId = event['arguments'].get("organizationId")
         if (event['arguments']['organizationId'] == ""):
             logger.error("The organizationId cannot be empty")
             return None
@@ -313,7 +449,7 @@ def handler(event, context):
         return getField(organizationID=organizationId, fieldID=event['arguments']['fieldId'], header=header)
 
     if query == "getBoundary":
-        return getBoundary(organizationID=organizationId, fieldID=event['arguments']['fieldId'], header=header)
+        return getBoundary(organizationID=organizationId, fieldID=event['arguments']['fieldId'], boundaryID=event['arguments']['boundaryId'], header=header)
 
     if query == "listOrganizations":
         return listOrganizations(header=header)
@@ -323,3 +459,15 @@ def handler(event, context):
 
     if query == "getFarm":
         return getFarm(organizationID=organizationId, farmID=event['arguments']['farmId'], header=header)
+
+    if query == "listMachines":
+        return listMachines(organizationID=organizationId, header=header)
+
+    if query == "getFile":
+        return getFile(fileID=event['arguments']['fileId'], header=header)
+
+    if query == "listFiles":
+        return listFiles(header=header)
+
+    if query == "listOrganizationFiles":
+        return listOrganizationFiles(organizationID=organizationId, header=header)

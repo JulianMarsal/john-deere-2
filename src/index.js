@@ -3,39 +3,21 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
-import { setContext } from '@apollo/client/link/context';
-
-
-const httpLink = createHttpLink({
-  uri: 'https://w7ozev7n2nd2fkzmh623e5suy4.appsync-api.us-east-1.amazonaws.com/graphql',
-});
-
-
-const authLink = setContext((_, { headers }) => {
-
-  // return the headers to the context so httpLink can read them
-  return {
-    headers: {
-      ...headers,
-      'Accept': 'application/vnd.deere.axiom.v3+json',
-      'x-api-key': "da2-54xou2rprjhyxlirj5zmwdds74",
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  }
-});
-
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
-});
+import { Auth0Provider } from "@auth0/auth0-react";
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>,
+    <React.StrictMode>
+        <Auth0Provider
+            domain="https://signin.johndeere.com/oauth2/aus78tnlaysMraFhC1t7/v1"
+            clientId="0oa61s8jfn4JhYGK85d7"
+            redirectUri={window.location.origin}
+        >
+            {console.log("window location origin: " + window.location.origin)}
+            <App />
+        </Auth0Provider>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -70,7 +70,7 @@ type Link {
 }
 #Here ends the schema definition of Client
 
-#Here begins the schema definition of Client
+#Here begins the schema definition of Field
 type Field {
   type: String
   name: String
@@ -78,22 +78,10 @@ type Field {
   id: ID
   links: [Link]
 }
-#Here ends the schema definition of Client
+#Here ends the schema definition of Field
 
-#Here begins the schema definition of Client
 
- type Machine {
-   id: ID
-   vin: String
-   name: String
-   engineSerialNumber: String
-   telematicsState: String
-   externalID: String
- }
-
- #Here ends the schema definition of Client
-
-#Here begins the schema definition of Frarm
+#Here begins the schema definition of Farm
  type Farm {
     type: String
     name: String
@@ -105,9 +93,9 @@ type Field {
 
   #Here ends the schema definition of Farm
 
-  #Here begins the schema definition of Farm
+  #Here begins the schema definition of Organization
 
-  type organization {
+  type Organization {
     #Deere have 2 types of type, uno is @type, the other is type. I don't know why someone in the world would use @type.
     type: String
     name: String
@@ -117,20 +105,81 @@ type Field {
     links: [Link]
   }
 
-  #Here ends the schema definition of Farm
+  #Here ends the schema definition of Organization
+
+  #Here begins the schema definition of Machine
+
+  type Machine {
+    type: String
+    visualizationCategory: String
+    machineCategories: AWSJSON
+    telematicsState: String
+    capabilities: [String] #Este es una lista de anda a saber que
+    terminals: AWSJSON
+    displays: AWSJSON
+    guid: String
+    contributionDefinitionID: ID # O string, anda a saber
+    id: ID
+    name: String
+    equipmentMake: AWSJSON
+    equipmentType:AWSJSON
+    equipmentApexType:AWSJSON
+    equipmentModel:AWSJSON
+    isSerialNumberCertified: String
+    links: [Link]
+  }
+
+  
+
+  #Here ends the schema definition of Machine
+  type UserToken @model @auth(rules: [{ allow: public }]) {
+    id: ID
+    userId: String
+    provider: String
+    name: String
+    value: String    
+}
+
+#Here begins the schema definition of File
+
+type File {
+  name: String
+  type: String
+  createdTime: AWSDateTime
+  modifiedTime: AWSDateTime
+  nativeSize: Int
+  source: String
+  transferPending: Boolean
+  visibleViaShare:String
+  shared: Boolean
+  new: Boolean
+  status: String
+  archived: Boolean
+  format: String
+  manufacturer: String
+  delayProcessing: Boolean
+  id: ID
+  links: [Link]
+}
+
+#Here ends the schema definition of File
 
 type Query {
   #listBoundaries(organizationId: ID!, fieldId: ID!): Boundary @function(name: "listBoundaries-${env}") #If we need to list all boundaries for a organization, we can modify and use this query.
   #listMachines(organizationId: ID!): String @function(name: "listMachines-${env}")
   #getMachine(organizationId: ID!, machineId: ID!): Machine @function(name: "getMachine-${env}")
-  listOrganizations: [organization] @function(name: "functionsDeereApi-${env}")
+  listOrganizations: [Organization] @function(name: "functionsDeereApi-${env}")
   listClients(organizationId: ID!): [Client] @function(name: "functionsDeereApi-${env}")
   getClient(organizationId: ID!, clientId: ID!): Client @function(name: "functionsDeereApi-${env}")
   listFarms(organizationId: ID!): [Farm] @function(name: "functionsDeereApi-${env}")
   getFarm(organizationId: ID!, farmId: ID!): Farm @function(name: "functionsDeereApi-${env}")
   listFields(organizationId: ID!): [Field] @function(name: "functionsDeereApi-${env}")
   getField(organizationId: ID!, fieldId: String!): Field @function(name: "functionsDeereApi-${env}")
-  getBoundary(organizationId: ID!, fieldId: ID!): Boundary @function(name: "functionsDeereApi-${env}")
+  getBoundary(organizationId: ID!, fieldId: ID!, boundaryId: ID!): Boundary @function(name: "functionsDeereApi-${env}")
   autenticationDeere: AWSJSON @function(name: "autenticationDeere-${env}")
-  getAuthorizationToken(code: String!): String @function(name: "getAuthorizationToken-${env}")
+  getAuthorizationToken(code: String!, callback: String): String @function(name: "getAuthorizationToken-${env}")
+  listMachines(organizationId: ID!): [Machine] @function(name: "functionsDeereApi-${env}")
+  listFiles: [File] @function(name: "functionsDeereApi-${env}")
+  listOrganizationFiles(organizationId: ID!): [File] @function(name: "functionsDeereApi-${env}")
+  getFile(fileId: ID!): File @function(name: "functionsDeereApi-${env}")
 }
