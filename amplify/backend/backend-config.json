@@ -26,7 +26,8 @@
     "functionsDeereApi": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": []
     },
     "getAuthorizationToken": {
       "build": true,

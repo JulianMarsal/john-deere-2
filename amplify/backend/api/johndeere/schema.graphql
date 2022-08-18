@@ -165,10 +165,9 @@ type File {
 #Here ends the schema definition of File
 
 type Query {
-  #listBoundaries(organizationId: ID!, fieldId: ID!): Boundary @function(name: "listBoundaries-${env}") #If we need to list all boundaries for a organization, we can modify and use this query.
-  #listMachines(organizationId: ID!): String @function(name: "listMachines-${env}")
-  #getMachine(organizationId: ID!, machineId: ID!): Machine @function(name: "getMachine-${env}")
   listOrganizations: [Organization] @function(name: "functionsDeereApi-${env}")
+  listOrganizationBoundaries(organizationId: ID!): [Boundary] @function(name: "functionsDeereApi-${env}")
+  listFieldBoundaries(organizationId: ID!, fieldId: ID!): [Boundary] @function(name: "functionsDeereApi-${env}")
   listClients(organizationId: ID!): [Client] @function(name: "functionsDeereApi-${env}")
   getClient(organizationId: ID!, clientId: ID!): Client @function(name: "functionsDeereApi-${env}")
   listFarms(organizationId: ID!): [Farm] @function(name: "functionsDeereApi-${env}")
@@ -179,6 +178,7 @@ type Query {
   autenticationDeere: AWSJSON @function(name: "autenticationDeere-${env}")
   getAuthorizationToken(code: String!, callback: String): String @function(name: "getAuthorizationToken-${env}")
   listMachines(organizationId: ID!): [Machine] @function(name: "functionsDeereApi-${env}")
+  #getMachine(organizationId: ID!, machineId: ID!): Machine @function(name: "getMachine-${env}")
   listFiles: [File] @function(name: "functionsDeereApi-${env}")
   listOrganizationFiles(organizationId: ID!): [File] @function(name: "functionsDeereApi-${env}")
   getFile(fileId: ID!): File @function(name: "functionsDeereApi-${env}")

@@ -156,6 +156,74 @@ def getBoundary(organizationID, fieldID, boundaryID, header):
     return boundaryDict
 
 
+def listOrganizationBoundaries(organizationID, header):
+
+    response = requests.get("https://sandboxapi.deere.com/platform/organizations/" +
+                            organizationID+"/boundaries", headers=header).json()
+
+    # Check if the response is right
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
+
+    boundaryList = []
+    for boundary in response["values"]:
+        boundaryDict = {}
+        boundaryDict["type"] = boundary["@type"]
+        boundaryDict["name"] = boundary["name"]
+        boundaryDict["area"] = boundary["area"]
+        boundaryDict["workableArea"] = boundary["workableArea"]
+        boundaryDict["sourceType"] = boundary["sourceType"]
+        boundaryDict["multipolygons"] = boundary["multipolygons"]
+        boundaryDict["extent"] = boundary["extent"]
+        boundaryDict["active"] = boundary["active"]
+        boundaryDict["archived"] = boundary["archived"]
+        boundaryDict["id"] = boundary["id"]
+        boundaryDict["modifiedTime"] = boundary["modifiedTime"]
+        boundaryDict["createdTime"] = boundary["createdTime"]
+        boundaryDict["irrigated"] = boundary["irrigated"]
+        boundaryLinks = []
+        for link in boundary["links"]:
+            boundaryLinks.append(link)
+        boundaryDict["links"] = boundaryLinks
+        boundaryList.append(boundaryDict)
+    return boundaryList
+
+
+def listFieldBoundaries(organizationID, fieldID, header):
+
+    response = requests.get("https://sandboxapi.deere.com/platform/organizations/" +
+                            organizationID+"/fields/"+fieldID+"/boundaries", headers=header).json()
+
+    # Check if the response is right
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
+
+    boundaryList = []
+    for boundary in response["values"]:
+        boundaryDict = {}
+        boundaryDict["type"] = boundary["@type"]
+        boundaryDict["name"] = boundary["name"]
+        boundaryDict["area"] = boundary["area"]
+        boundaryDict["workableArea"] = boundary["workableArea"]
+        boundaryDict["sourceType"] = boundary["sourceType"]
+        boundaryDict["multipolygons"] = boundary["multipolygons"]
+        boundaryDict["extent"] = boundary["extent"]
+        boundaryDict["active"] = boundary["active"]
+        boundaryDict["archived"] = boundary["archived"]
+        boundaryDict["id"] = boundary["id"]
+        boundaryDict["modifiedTime"] = boundary["modifiedTime"]
+        boundaryDict["createdTime"] = boundary["createdTime"]
+        boundaryDict["irrigated"] = boundary["irrigated"]
+        boundaryLinks = []
+        for link in boundary["links"]:
+            boundaryLinks.append(link)
+        boundaryDict["links"] = boundaryLinks
+        boundaryList.append(boundaryDict)
+    return boundaryList
+
+
 def listOrganizations(header):
     print("Variable de Auth: ")
     print(os.environ['Authorization'])
@@ -416,6 +484,7 @@ def listOrganizationFiles(organizationID, header):
 
 
 def handler(event, context):
+    print()
     try:
         authorization = os.environ['Authorization']
     except Exception as e:
@@ -447,6 +516,12 @@ def handler(event, context):
 
     if query == "getField":
         return getField(organizationID=organizationId, fieldID=event['arguments']['fieldId'], header=header)
+
+    if query == "listOrganizationBoundaries":
+        return listOrganizationBoundaries(organizationID=organizationId, header=header)
+
+    if query == "listFieldBoundaries":
+        return listFieldBoundaries(organizationID=organizationId, fieldID=event['arguments']['fieldId'], header=header)
 
     if query == "getBoundary":
         return getBoundary(organizationID=organizationId, fieldID=event['arguments']['fieldId'], boundaryID=event['arguments']['boundaryId'], header=header)

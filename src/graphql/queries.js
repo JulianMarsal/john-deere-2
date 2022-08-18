@@ -16,6 +16,90 @@ export const listOrganizations = /* GraphQL */ `
     }
   }
 `;
+export const listOrganizationBoundaries = /* GraphQL */ `
+  query ListOrganizationBoundaries($organizationId: ID!) {
+    listOrganizationBoundaries(organizationId: $organizationId) {
+      type
+      name
+      sourceType
+      createdTime
+      modifiedTime
+      area {
+        type
+        valueAsDouble
+        unit
+      }
+      workableArea {
+        type
+        valueAsDouble
+        unit
+      }
+      multipolygons {
+        type
+        rings {
+          type
+        }
+      }
+      extent {
+        type
+        topLeft {
+          lat
+          lon
+        }
+        bottomRight {
+          lat
+          lon
+        }
+      }
+      archived
+      id
+      active
+      irrigated
+    }
+  }
+`;
+export const listFieldBoundaries = /* GraphQL */ `
+  query ListFieldBoundaries($organizationId: ID!, $fieldId: ID!) {
+    listFieldBoundaries(organizationId: $organizationId, fieldId: $fieldId) {
+      type
+      name
+      sourceType
+      createdTime
+      modifiedTime
+      area {
+        type
+        valueAsDouble
+        unit
+      }
+      workableArea {
+        type
+        valueAsDouble
+        unit
+      }
+      multipolygons {
+        type
+        rings {
+          type
+        }
+      }
+      extent {
+        type
+        topLeft {
+          lat
+          lon
+        }
+        bottomRight {
+          lat
+          lon
+        }
+      }
+      archived
+      id
+      active
+      irrigated
+    }
+  }
+`;
 export const listClients = /* GraphQL */ `
   query ListClients($organizationId: ID!) {
     listClients(organizationId: $organizationId) {
