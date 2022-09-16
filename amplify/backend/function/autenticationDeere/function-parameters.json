@@ -4,6 +4,10 @@
     {
       "cloudFormationParameterName": "clientSecret",
       "environmentVariableName": "client_secret"
+    },
+    {
+      "cloudFormationParameterName": "clientSecret",
+      "environmentVariableName": "client_secret"
     }
   ]
 }

@@ -12,6 +12,19 @@
     {
       "cloudFormationParameterName": "authorization",
       "environmentVariableName": "Authorization"
+    },
+    {
+      "cloudFormationParameterName": "accessKeyId",
+      "environmentVariableName": "AccessKeyId"
+    },
+    {
+      "cloudFormationParameterName": "secretAccessKey",
+      "environmentVariableName": "secretAccessKey"
+    },
+    {
+      "cloudFormationParameterName": "authorization",
+      "environmentVariableName": "Authorization"
     }
-  ]
+  ],
+  "permissions": {}
 }

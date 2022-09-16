@@ -1,7 +1,8 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
-
+input AMPLIFY {
+  globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
 #Here begins the schema definition of Boundary
 type Boundary {
   type: String
@@ -10,13 +11,13 @@ type Boundary {
   createdTime: String
   modifiedTime: String
   area: Area
-  workableArea: WorkableArea 
-  multipolygons: [Polygon] 
-  extent: Extent 
+  workableArea: WorkableArea
+  multipolygons: [Polygon]
+  extent: Extent
   archived: Boolean
   id: ID!
   active: Boolean
-  irrigated: Boolean    
+  irrigated: Boolean
 }
 
 type Point {
@@ -26,7 +27,7 @@ type Point {
 }
 
 type Area {
-  type: String 
+  type: String
   valueAsDouble: String
   unit: String
 }
@@ -80,64 +81,61 @@ type Field {
 }
 #Here ends the schema definition of Field
 
-
 #Here begins the schema definition of Farm
- type Farm {
-    type: String
-    name: String
-    archived: Boolean
-    clientUri: String
-    id: ID
-    links: [Link]
- }
+type Farm {
+  type: String
+  name: String
+  archived: Boolean
+  clientUri: String
+  id: ID
+  links: [Link]
+}
 
-  #Here ends the schema definition of Farm
+#Here ends the schema definition of Farm
 
-  #Here begins the schema definition of Organization
+#Here begins the schema definition of Organization
 
-  type Organization {
-    #Deere have 2 types of type, uno is @type, the other is type. I don't know why someone in the world would use @type.
-    type: String
-    name: String
-    member: Boolean
-    internal: Boolean
-    id: ID
-    links: [Link]
-  }
+type Organization {
+  #Deere have 2 types of type, uno is @type, the other is type. I don't know why someone in the world would use @type.
+  type: String
+  name: String
+  member: Boolean
+  internal: Boolean
+  id: ID
+  links: [Link]
+}
 
-  #Here ends the schema definition of Organization
+#Here ends the schema definition of Organization
 
-  #Here begins the schema definition of Machine
+#Here begins the schema definition of Machine
 
-  type Machine {
-    type: String
-    visualizationCategory: String
-    machineCategories: AWSJSON
-    telematicsState: String
-    capabilities: [String] #Este es una lista de anda a saber que
-    terminals: AWSJSON
-    displays: AWSJSON
-    guid: String
-    contributionDefinitionID: ID # O string, anda a saber
-    id: ID
-    name: String
-    equipmentMake: AWSJSON
-    equipmentType:AWSJSON
-    equipmentApexType:AWSJSON
-    equipmentModel:AWSJSON
-    isSerialNumberCertified: String
-    links: [Link]
-  }
+type Machine {
+  type: String
+  visualizationCategory: String
+  machineCategories: AWSJSON
+  telematicsState: String
+  capabilities: [String] #Este es una lista de anda a saber que
+  terminals: AWSJSON
+  displays: AWSJSON
+  guid: String
+  contributionDefinitionID: ID # O string, anda a saber
+  id: ID
+  name: String
+  equipmentMake: AWSJSON
+  equipmentType: AWSJSON
+  equipmentApexType: AWSJSON
+  equipmentModel: AWSJSON
+  isSerialNumberCertified: String
+  links: [Link]
+}
 
-  
-
-  #Here ends the schema definition of Machine
-  type UserToken @model @auth(rules: [{ allow: public }]) {
-    id: ID
-    userId: String
-    provider: String
-    name: String
-    value: String    
+#Here ends the schema definition of Machine
+type UserToken @model @auth(rules: [{ allow: public }]) {
+  id: ID
+  userId: String
+  provider: String
+  name: String
+  value: String
 }
 
 #Here begins the schema definition of File
@@ -150,7 +148,7 @@ type File {
   nativeSize: Int
   source: String
   transferPending: Boolean
-  visibleViaShare:String
+  visibleViaShare: String
   shared: Boolean
   new: Boolean
   status: String
@@ -164,17 +162,74 @@ type File {
 
 #Here ends the schema definition of File
 
+#Here begins the schema of HarvestResult
+type HarvestResult {
+  type: String
+  measurementName: String
+  measurementCategory: String
+  area: YieldInfo
+  yield: YieldInfo
+  averageYield: YieldInfo
+  averageMoisture: YieldInfo
+  wetMass: YieldInfo
+  averageWetMass: YieldInfo
+  averageSpeed: YieldInfo
+  varietyTotals: YieldInfo
+  productTotals: [String]
+  links: [Link]
+}
+#Here ends the schema definition of HarvestResult
+
+#Here ends the schema definition of YieldInfo
+type YieldInfo {
+  type: String
+  name: String
+  value: Float
+  unitId: String
+  variableRepresentation: String
+}
+#Here begins the schema of YieldInfo
+
+#Here begins the schema of Layer
+type FieldOperation {
+  type: String
+  fieldOperationType: String
+  adaptMachineType: String
+  cropSeason: String
+  modifiedTime: String
+  startDate: String
+  endDate: String
+  cropName: String
+  orgId: Int
+  varieties: [Varieties]
+  id: ID
+  links: [Link]
+}
+#Here ends the schema definition of Layer
+
+#Here begins the schema definition of Varieties
+type Varieties {
+  type: String
+  productType: String
+  name: String
+  tankMix: Boolean
+}
+##Here ends the schema definition of Varieties
 type Query {
   listOrganizations: [Organization] @function(name: "functionsDeereApi-${env}")
-  listOrganizationBoundaries(organizationId: ID!): [Boundary] @function(name: "functionsDeereApi-${env}")
-  listFieldBoundaries(organizationId: ID!, fieldId: ID!): [Boundary] @function(name: "functionsDeereApi-${env}")
+  listOrganizationGeometries(organizationId: ID!): [Boundary] @function(name: "functionsDeereApi-${env}")
+  listFieldGeometries(organizationId: ID!, fieldId: ID!): [Boundary] @function(name: "functionsDeereApi-${env}")
   listClients(organizationId: ID!): [Client] @function(name: "functionsDeereApi-${env}")
   getClient(organizationId: ID!, clientId: ID!): Client @function(name: "functionsDeereApi-${env}")
   listFarms(organizationId: ID!): [Farm] @function(name: "functionsDeereApi-${env}")
+  listFarmFields(organizationId: ID!, farmId: ID!): [Farm] @function(name: "functionsDeereApi-${env}")
   getFarm(organizationId: ID!, farmId: ID!): Farm @function(name: "functionsDeereApi-${env}")
   listFields(organizationId: ID!): [Field] @function(name: "functionsDeereApi-${env}")
   getField(organizationId: ID!, fieldId: String!): Field @function(name: "functionsDeereApi-${env}")
-  getBoundary(organizationId: ID!, fieldId: ID!, boundaryId: ID!): Boundary @function(name: "functionsDeereApi-${env}")
+  #getEspecificFieldOperation(operationId: ID!) @function(name: "functionsDeereApi-${env}")
+  getFieldOperations(operationId: String!): FieldOperation @function(name: "functionsDeereApi-${env}")
+  listFieldsOperations(organizationId: ID!): [Field] @function(name: "functionsDeereApi-${env}")
+  getGeometry(organizationId: ID!, fieldId: ID!, boundaryId: ID!): Boundary @function(name: "functionsDeereApi-${env}")
   autenticationDeere: AWSJSON @function(name: "autenticationDeere-${env}")
   getAuthorizationToken(code: String!, callback: String): String @function(name: "getAuthorizationToken-${env}")
   listMachines(organizationId: ID!): [Machine] @function(name: "functionsDeereApi-${env}")
@@ -182,4 +237,7 @@ type Query {
   listFiles: [File] @function(name: "functionsDeereApi-${env}")
   listOrganizationFiles(organizationId: ID!): [File] @function(name: "functionsDeereApi-${env}")
   getFile(fileId: ID!): File @function(name: "functionsDeereApi-${env}")
+  #getLayer: String @function(name: "getFile-${env}")
+  uploadStreamFileWithNode: String @function(name: "uploadStreamFileWithNode-${env}")
+
 }

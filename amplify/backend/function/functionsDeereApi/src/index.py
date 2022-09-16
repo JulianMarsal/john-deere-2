@@ -2,6 +2,7 @@ import json
 import logging
 import requests
 import os
+import time
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -81,6 +82,100 @@ def listFields(organizationID, header):
     return fieldList
 
 
+def listFarmFields(organizationID, farmID, header):
+    response = requests.get("https://sandboxapi.deere.com/platform/organizations/" +
+                            organizationID+"/farms/"+farmID+"/fields", headers=header).json()
+
+    # Check if the response is right
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
+
+    fieldList = []
+    for field in response["values"]:
+        fieldDict = {}
+        fieldDict["type"] = field["@type"]  # ver que onda esta nomenglatura
+        fieldDict["name"] = field["name"]
+        fieldDict["archived"] = field["archived"]
+        fieldDict["id"] = field["id"]
+        fieldLinks = []
+        for link in field["links"]:
+            fieldLinks.append(link)
+        fieldDict["links"] = fieldLinks
+        fieldList.append(fieldDict)
+    return fieldList
+
+
+def checkIfDownloadIsReady(listFields, header):
+    # This code will run in loop until all the responses return a 200 response o
+    # The time is running out
+    fieldsInQuery = listFields
+    fieldsReady = []
+    while len(fieldsReady) != len(fieldsInQuery):
+        for field in fieldsInQuery:
+            response = requests.get(
+                field.get("downloadLink"), headers=header)
+            # Insertar la lógica de poop y push
+            # response = requests.get(field.get("uri"), headers=header).json()
+
+            print("Quedan %s" %
+                  (len(fieldsInQuery) - len(fieldsReady)) + " links pendientes")
+            print("Y fieldsReady tiene %s" %
+                  len(fieldsReady) + " links listos")
+            # This was supossed to be a 202 code but in practice the app return a 200
+            # Maybe in tha case of the 307 response return a 202 latter
+            if response.status_code == 200:
+                fieldsReady.append(
+                    [n for n in fieldsInQuery if n["name"] == field["name"]][0])
+                # fieldsInQuery.remove( field["name"])
+            elif response.status_code == 406:
+                # This response code is not supply necessary but in order to take some
+                # precautions I wrote it just in case.
+                print("Response code :")
+                print(response.status_code)
+    print("Quedan %s" % (len(fieldsInQuery) -
+          len(fieldsReady)) + " links pendientes")
+    print("Y fieldsReady tiene %s" % len(fieldsReady) + " links listos")
+    print("Fields ready: ")
+    time.sleep(2)
+    return fieldsReady
+
+
+def listFieldsOperations(organizationID, header):
+
+    response = requests.get("https://sandboxapi.deere.com/platform/organizations/" +
+                            organizationID+"/fields", headers=header).json()
+
+    # Check if the response is right
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
+
+    fieldOperationList = []
+    for field in response["values"]:
+        # print(field)
+        fieldDict = {}
+        fieldDict["name"] = field["name"]
+        fieldDict["id"] = field["id"]
+        fieldDict["downloadLink"] = {}
+        for link in field["links"]:
+            if link["rel"] == "fieldOperation":
+                fieldDict["downloadLink"] = link["uri"]
+        fieldOperationList.append(fieldDict)
+        # Mandar fieldOperationLinks y consultar por su estado 202.
+
+    #uploadFileWithInfo(file, info, bucket)
+
+    return checkIfDownloadIsReady(fieldOperationList, header)
+
+    return "fieldOperationDict"
+
+
+def uploadFileWithInfo(file, info, bucket):
+
+    return "Ok or not okey"
+
+
 def getField(organizationID, fieldID, header):
 
     # Check if the fieldID parameter is not empty
@@ -108,7 +203,76 @@ def getField(organizationID, fieldID, header):
     return fieldDict
 
 
-def getBoundary(organizationID, fieldID, boundaryID, header):
+def getFieldOperations(operationID, header):
+
+    # Check if the fieldID parameter is not empty
+    if (operationID == ""):
+        logger.error("The operationId cannot be empty")
+        return None
+
+    response = requests.get(
+        "https://sandboxapi.deere.com/platform/fieldOperations/"+operationID, headers=header).json()
+    print("response bla bla")
+    print(response)
+    # Check if the response is right
+    if response.get("faultcode"):
+        logger.error("Error in response: " + response)
+        return None
+    operationsDict = {}
+    operationsDict["type"] = response["@type"]
+    operationsDict["fieldOperationType"] = response["fieldOperationType"]
+    operationsDict["adaptMachineType"] = response["adaptMachineType"]
+    operationsDict["cropSeason"] = response["cropSeason"]
+    operationsDict["modifiedTime"] = response["modifiedTime"]
+    operationsDict["startDate"] = response["startDate"]
+    operationsDict["endDate"] = response["endDate"]
+    operationsDict["cropName"] = response["cropName"]
+    operationsDict["orgId"] = response["orgId"]
+    operationsDict["varieties"] = response["varieties"]
+    operationsDict["id"] = response["id"]
+    fieldLinks = []
+    for link in response["links"]:
+        fieldLinks.append(link)
+    operationsDict["links"] = fieldLinks
+    return operationsDict
+
+# def getHarvestResult(organizationID, fieldID, header):
+
+#     # Check if the fieldID parameter is not empty
+#     if (fieldID == ""):
+#         logger.error("The fieldID cannot be empty")
+#         return None
+
+#     response = requests.get(
+#         "https://sandboxapi.deere.com/platform/fieldOperations/NTg3NDU2XzYyZjUxMGNiZmYxZGFhZjI1YTJhOGJhMw/measurementTypes/HarvestYieldResult", headers=header).json()
+#     print("response bla bla")
+#     print(response)
+#     # Check if the response is right
+#     if response.get("faultcode"):
+#         logger.error("Error in response: " + response)
+#         return None
+
+#     operationsDict = {}
+#     operationsDict["type"] = response["@type"]
+#     operationsDict["measurementName"] = response["measurementName"]
+#     operationsDict["measurementCategory"] = response["measurementCategory"]
+#     operationsDict["area"] = response["area"]
+#     operationsDict["yield"] = response["yield"]
+#     operationsDict["averageYield"] = response["averageYield"]
+#     operationsDict["averageMoisture"] = response["averageMoisture"]
+#     operationsDict["wetMass"] = response["wetMass"]
+#     operationsDict["averageWetMass"] = response["averageWetMass"]
+#     operationsDict["averageSpeed"] = response["averageSpeed"]
+#     operationsDict["varietyTotals"] = response["varietyTotals"]
+#     operationsDict["productTotals"] = response["productTotals"]
+#     fieldLinks = []
+#     for link in response["links"]:
+#         fieldLinks.append(link)
+#     operationsDict["links"] = fieldLinks
+#     return operationsDict
+
+
+def getGeometry(organizationID, fieldID, boundaryID, header):
 
     # Check if the fieldID parameter is not empty
     if (fieldID == ""):
@@ -156,7 +320,7 @@ def getBoundary(organizationID, fieldID, boundaryID, header):
     return boundaryDict
 
 
-def listOrganizationBoundaries(organizationID, header):
+def listOrganizationGeometries(organizationID, header):
 
     response = requests.get("https://sandboxapi.deere.com/platform/organizations/" +
                             organizationID+"/boundaries", headers=header).json()
@@ -187,10 +351,11 @@ def listOrganizationBoundaries(organizationID, header):
             boundaryLinks.append(link)
         boundaryDict["links"] = boundaryLinks
         boundaryList.append(boundaryDict)
+
     return boundaryList
 
 
-def listFieldBoundaries(organizationID, fieldID, header):
+def listFieldGeometries(organizationID, fieldID, header):
 
     response = requests.get("https://sandboxapi.deere.com/platform/organizations/" +
                             organizationID+"/fields/"+fieldID+"/boundaries", headers=header).json()
@@ -225,8 +390,6 @@ def listFieldBoundaries(organizationID, fieldID, header):
 
 
 def listOrganizations(header):
-    print("Variable de Auth: ")
-    print(os.environ['Authorization'])
     response = requests.get(
         "https://sandboxapi.deere.com/platform/organizations/", headers=header).json()
 
@@ -238,7 +401,7 @@ def listOrganizations(header):
     # except:
     #     pass
     if response.get("faultcode"):
-        logger.error("Error in response: " + response)
+        logger.error("Error in response: %s" % response)
         return None
 
     organizationList = []
@@ -499,7 +662,7 @@ def handler(event, context):
 
     query = event["fieldName"]
     print("query: " + query)
-    if (query != "getFile" and query != "listOrganizations" and query != "listFiles"):
+    if (query != "getFile" and query != "listOrganizations" and query != "listFiles" and query != "getFieldOperations"):
         organizationId = event['arguments'].get("organizationId")
         if (event['arguments']['organizationId'] == ""):
             logger.error("The organizationId cannot be empty")
@@ -514,23 +677,32 @@ def handler(event, context):
     if query == "listFields":
         return listFields(organizationID=organizationId, header=header)
 
+    if query == "listFieldsOperations":
+        return listFieldsOperations(organizationID=organizationId, header=header)
+
     if query == "getField":
         return getField(organizationID=organizationId, fieldID=event['arguments']['fieldId'], header=header)
 
-    if query == "listOrganizationBoundaries":
-        return listOrganizationBoundaries(organizationID=organizationId, header=header)
+    if query == "getFieldOperations":
+        return getFieldOperations(operationID=event['arguments']['operationId'], header=header)
 
-    if query == "listFieldBoundaries":
-        return listFieldBoundaries(organizationID=organizationId, fieldID=event['arguments']['fieldId'], header=header)
+    if query == "listOrganizationGeometries":
+        return listOrganizationGeometries(organizationID=organizationId, header=header)
 
-    if query == "getBoundary":
-        return getBoundary(organizationID=organizationId, fieldID=event['arguments']['fieldId'], boundaryID=event['arguments']['boundaryId'], header=header)
+    if query == "listFieldGeometries":
+        return listFieldGeometries(organizationID=organizationId, fieldID=event['arguments']['fieldId'], header=header)
+
+    if query == "getGeometry":
+        return getGeometry(organizationID=organizationId, fieldID=event['arguments']['fieldId'], boundaryID=event['arguments']['boundaryId'], header=header)
 
     if query == "listOrganizations":
         return listOrganizations(header=header)
 
     if query == "listFarms":
         return listFarms(organizationID=organizationId, header=header)
+
+    if query == "listFarmFields":
+        return listFarmFields(organizationID=organizationId, farmID=event['arguments']['farmId'], header=header)
 
     if query == "getFarm":
         return getFarm(organizationID=organizationId, farmID=event['arguments']['farmId'], header=header)
