@@ -8,6 +8,11 @@ verify_ssl = true
 [packages]
 src = {editable = true, path = "./src"}
 requests = "*"
+black = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true

@@ -16,9 +16,9 @@ export const listOrganizations = /* GraphQL */ `
     }
   }
 `;
-export const listOrganizationBoundaries = /* GraphQL */ `
-  query ListOrganizationBoundaries($organizationId: ID!) {
-    listOrganizationBoundaries(organizationId: $organizationId) {
+export const listOrganizationGeometries = /* GraphQL */ `
+  query ListOrganizationGeometries($organization_id: ID!) {
+    listOrganizationGeometries(organization_id: $organization_id) {
       type
       name
       sourceType
@@ -34,12 +34,7 @@ export const listOrganizationBoundaries = /* GraphQL */ `
         valueAsDouble
         unit
       }
-      multipolygons {
-        type
-        rings {
-          type
-        }
-      }
+      geometry
       extent {
         type
         topLeft {
@@ -58,9 +53,12 @@ export const listOrganizationBoundaries = /* GraphQL */ `
     }
   }
 `;
-export const listFieldBoundaries = /* GraphQL */ `
-  query ListFieldBoundaries($organizationId: ID!, $fieldId: ID!) {
-    listFieldBoundaries(organizationId: $organizationId, fieldId: $fieldId) {
+export const listFieldGeometries = /* GraphQL */ `
+  query ListFieldGeometries($organization_id: ID!, $field_id: ID!) {
+    listFieldGeometries(
+      organization_id: $organization_id
+      field_id: $field_id
+    ) {
       type
       name
       sourceType
@@ -76,12 +74,7 @@ export const listFieldBoundaries = /* GraphQL */ `
         valueAsDouble
         unit
       }
-      multipolygons {
-        type
-        rings {
-          type
-        }
-      }
+      geometry
       extent {
         type
         topLeft {
@@ -101,8 +94,8 @@ export const listFieldBoundaries = /* GraphQL */ `
   }
 `;
 export const listClients = /* GraphQL */ `
-  query ListClients($organizationId: ID!) {
-    listClients(organizationId: $organizationId) {
+  query ListClients($organization_id: ID!) {
+    listClients(organization_id: $organization_id) {
       name
       links {
         rel
@@ -114,8 +107,8 @@ export const listClients = /* GraphQL */ `
   }
 `;
 export const getClient = /* GraphQL */ `
-  query GetClient($organizationId: ID!, $clientId: ID!) {
-    getClient(organizationId: $organizationId, clientId: $clientId) {
+  query GetClient($organization_id: ID!, $client_id: ID!) {
+    getClient(organization_id: $organization_id, client_id: $client_id) {
       name
       links {
         rel
@@ -126,9 +119,39 @@ export const getClient = /* GraphQL */ `
     }
   }
 `;
-export const listFarms = /* GraphQL */ `
-  query ListFarms($organizationId: ID!) {
-    listFarms(organizationId: $organizationId) {
+export const listClientFarms = /* GraphQL */ `
+  query ListClientFarms($organization_id: ID!, $client_id: ID!) {
+    listClientFarms(organization_id: $organization_id, client_id: $client_id) {
+      type
+      name
+      archived
+      clientUri
+      id
+      links {
+        rel
+        uri
+      }
+    }
+  }
+`;
+export const listOrganizationFarms = /* GraphQL */ `
+  query ListOrganizationFarms($organization_id: ID!) {
+    listOrganizationFarms(organization_id: $organization_id) {
+      type
+      name
+      archived
+      clientUri
+      id
+      links {
+        rel
+        uri
+      }
+    }
+  }
+`;
+export const listFarmFields = /* GraphQL */ `
+  query ListFarmFields($organization_id: ID!, $farm_id: ID!) {
+    listFarmFields(organization_id: $organization_id, farm_id: $farm_id) {
       type
       name
       archived
@@ -142,8 +165,8 @@ export const listFarms = /* GraphQL */ `
   }
 `;
 export const getFarm = /* GraphQL */ `
-  query GetFarm($organizationId: ID!, $farmId: ID!) {
-    getFarm(organizationId: $organizationId, farmId: $farmId) {
+  query GetFarm($organization_id: ID!, $farm_id: ID!) {
+    getFarm(organization_id: $organization_id, farm_id: $farm_id) {
       type
       name
       archived
@@ -156,13 +179,14 @@ export const getFarm = /* GraphQL */ `
     }
   }
 `;
-export const listFields = /* GraphQL */ `
-  query ListFields($organizationId: ID!) {
-    listFields(organizationId: $organizationId) {
+export const listOrganizationFields = /* GraphQL */ `
+  query ListOrganizationFields($organization_id: ID!) {
+    listOrganizationFields(organization_id: $organization_id) {
       type
       name
       archived
       id
+      geometry
       links {
         rel
         uri
@@ -171,11 +195,38 @@ export const listFields = /* GraphQL */ `
   }
 `;
 export const getField = /* GraphQL */ `
-  query GetField($organizationId: ID!, $fieldId: String!) {
-    getField(organizationId: $organizationId, fieldId: $fieldId) {
+  query GetField($organization_id: ID!, $field_id: String!) {
+    getField(organization_id: $organization_id, field_id: $field_id) {
       type
       name
       archived
+      id
+      geometry
+      links {
+        rel
+        uri
+      }
+    }
+  }
+`;
+export const getFieldOperations = /* GraphQL */ `
+  query GetFieldOperations($operation_id: String!) {
+    getFieldOperations(operation_id: $operation_id) {
+      type
+      fieldOperationType
+      adaptMachineType
+      cropSeason
+      modifiedTime
+      startDate
+      endDate
+      cropName
+      orgId
+      varieties {
+        type
+        productType
+        name
+        tankMix
+      }
       id
       links {
         rel
@@ -184,12 +235,27 @@ export const getField = /* GraphQL */ `
     }
   }
 `;
-export const getBoundary = /* GraphQL */ `
-  query GetBoundary($organizationId: ID!, $fieldId: ID!, $boundaryId: ID!) {
-    getBoundary(
-      organizationId: $organizationId
-      fieldId: $fieldId
-      boundaryId: $boundaryId
+export const listFieldsOperations = /* GraphQL */ `
+  query ListFieldsOperations($organization_id: ID!) {
+    listFieldsOperations(organization_id: $organization_id) {
+      type
+      name
+      archived
+      id
+      geometry
+      links {
+        rel
+        uri
+      }
+    }
+  }
+`;
+export const getGeometry = /* GraphQL */ `
+  query GetGeometry($organization_id: ID!, $field_id: ID!, $boundary_id: ID!) {
+    getGeometry(
+      organization_id: $organization_id
+      field_id: $field_id
+      boundary_id: $boundary_id
     ) {
       type
       name
@@ -206,12 +272,7 @@ export const getBoundary = /* GraphQL */ `
         valueAsDouble
         unit
       }
-      multipolygons {
-        type
-        rings {
-          type
-        }
-      }
+      geometry
       extent {
         type
         topLeft {
@@ -230,19 +291,9 @@ export const getBoundary = /* GraphQL */ `
     }
   }
 `;
-export const autenticationDeere = /* GraphQL */ `
-  query AutenticationDeere {
-    autenticationDeere
-  }
-`;
-export const getAuthorizationToken = /* GraphQL */ `
-  query GetAuthorizationToken($code: String!, $callback: String) {
-    getAuthorizationToken(code: $code, callback: $callback)
-  }
-`;
 export const listMachines = /* GraphQL */ `
-  query ListMachines($organizationId: ID!) {
-    listMachines(organizationId: $organizationId) {
+  query ListMachines($organization_id: ID!) {
+    listMachines(organization_id: $organization_id) {
       type
       visualizationCategory
       machineCategories
@@ -293,8 +344,8 @@ export const listFiles = /* GraphQL */ `
   }
 `;
 export const listOrganizationFiles = /* GraphQL */ `
-  query ListOrganizationFiles($organizationId: ID!) {
-    listOrganizationFiles(organizationId: $organizationId) {
+  query ListOrganizationFiles($organization_id: ID!) {
+    listOrganizationFiles(organization_id: $organization_id) {
       name
       type
       createdTime

@@ -18,28 +18,7 @@
     }
   },
   "function": {
-    "autenticationDeere": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "functionsDeereApi": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
-    },
-    "getAuthorizationToken": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "getFile": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "uploadStreamFileWithNode": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",

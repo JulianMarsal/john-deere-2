@@ -3,10 +3,30 @@
 input AMPLIFY {
   globalAuthRule: AuthRule = { allow: public }
 } # FOR TESTING ONLY!
+
+#Here begins the schema definition of Geometry
+type FieldGeometry {
+  type: String
+  name: String
+  sourceType: String
+  createdTime: String
+  modifiedTime: String
+  area: Area
+  workableArea: WorkableArea
+  geometry: String
+  extent: Extent
+  archived: Boolean
+  id: ID
+  active: Boolean
+  irrigated: Boolean
+}
+#Here ends the scema of Geometry
+
+
 #Here begins the schema definition of Boundary
 type Boundary {
   type: String
-  name: String!
+  name: String
   sourceType: String
   createdTime: String
   modifiedTime: String
@@ -15,10 +35,11 @@ type Boundary {
   multipolygons: [Polygon]
   extent: Extent
   archived: Boolean
-  id: ID!
+  id: ID
   active: Boolean
   irrigated: Boolean
 }
+
 
 type Point {
   #type: String
@@ -77,6 +98,7 @@ type Field {
   name: String
   archived: Boolean
   id: ID
+  geometry: AWSJSON#String
   links: [Link]
 }
 #Here ends the schema definition of Field
@@ -85,7 +107,7 @@ type Field {
 type Farm {
   type: String
   name: String
-  archived: Boolean
+  archived: Boolean 
   clientUri: String
   id: ID
   links: [Link]
@@ -103,6 +125,7 @@ type Organization {
   internal: Boolean
   id: ID
   links: [Link]
+  connected: Boolean 
 }
 
 #Here ends the schema definition of Organization
@@ -216,28 +239,26 @@ type Varieties {
 }
 ##Here ends the schema definition of Varieties
 type Query {
-  listOrganizations: [Organization] @function(name: "functionsDeereApi-${env}")
-  listOrganizationGeometries(organizationId: ID!): [Boundary] @function(name: "functionsDeereApi-${env}")
-  listFieldGeometries(organizationId: ID!, fieldId: ID!): [Boundary] @function(name: "functionsDeereApi-${env}")
-  listClients(organizationId: ID!): [Client] @function(name: "functionsDeereApi-${env}")
-  getClient(organizationId: ID!, clientId: ID!): Client @function(name: "functionsDeereApi-${env}")
-  listFarms(organizationId: ID!): [Farm] @function(name: "functionsDeereApi-${env}")
-  listFarmFields(organizationId: ID!, farmId: ID!): [Farm] @function(name: "functionsDeereApi-${env}")
-  getFarm(organizationId: ID!, farmId: ID!): Farm @function(name: "functionsDeereApi-${env}")
-  listFields(organizationId: ID!): [Field] @function(name: "functionsDeereApi-${env}")
-  getField(organizationId: ID!, fieldId: String!): Field @function(name: "functionsDeereApi-${env}")
-  #getEspecificFieldOperation(operationId: ID!) @function(name: "functionsDeereApi-${env}")
-  getFieldOperations(operationId: String!): FieldOperation @function(name: "functionsDeereApi-${env}")
-  listFieldsOperations(organizationId: ID!): [Field] @function(name: "functionsDeereApi-${env}")
-  getGeometry(organizationId: ID!, fieldId: ID!, boundaryId: ID!): Boundary @function(name: "functionsDeereApi-${env}")
-  autenticationDeere: AWSJSON @function(name: "autenticationDeere-${env}")
-  getAuthorizationToken(code: String!, callback: String): String @function(name: "getAuthorizationToken-${env}")
-  listMachines(organizationId: ID!): [Machine] @function(name: "functionsDeereApi-${env}")
-  #getMachine(organizationId: ID!, machineId: ID!): Machine @function(name: "getMachine-${env}")
-  listFiles: [File] @function(name: "functionsDeereApi-${env}")
-  listOrganizationFiles(organizationId: ID!): [File] @function(name: "functionsDeereApi-${env}")
-  getFile(fileId: ID!): File @function(name: "functionsDeereApi-${env}")
+  listOrganizations: [Organization] @function(name: "functionsDeereApi2-${env}")
+  listOrganizationGeometries(organization_id: ID!): [FieldGeometry] @function(name: "functionsDeereApi2-${env}")
+  listFieldGeometries(organization_id: ID!, field_id: ID!): [FieldGeometry] @function(name: "functionsDeereApi2-${env}")
+  listClients(organization_id: ID!): [Client] @function(name: "functionsDeereApi2-${env}")
+  getClient(organization_id: ID!, client_id: ID!): Client @function(name: "functionsDeereApi2-${env}")
+  listClientFarms(organization_id: ID!, client_id: ID!): [Farm] @function(name: "functionsDeereApi2-${env}")
+  listOrganizationFarms(organization_id: ID!): [Farm] @function(name: "functionsDeereApi2-${env}")
+  listFarmFields(organization_id: ID!, farm_id: ID!): [Field] @function(name: "functionsDeereApi2-${env}")
+  getFarm(organization_id: ID!, farm_id: ID!): Farm @function(name: "functionsDeereApi2-${env}")
+  listOrganizationFields(organization_id: ID!): [Field] @function(name: "functionsDeereApi2-${env}")
+  getField(organization_id: ID!, field_id: String!): Field @function(name: "functionsDeereApi2-${env}")
+  #getEspecificFieldOperation(operation_id: ID!) @function(name: "functionsDeereApi2-${env}")
+  getFieldOperations(operation_id: String!): FieldOperation @function(name: "functionsDeereApi2-${env}")
+  listFieldsOperations(organization_id: ID!): [Field] @function(name: "functionsDeereApi2-${env}")
+  getGeometry(organization_id: ID!, field_id: ID!, boundary_id: ID!): FieldGeometry @function(name: "functionsDeereApi2-${env}")
+  listMachines(organization_id: ID!): [Machine] @function(name: "functionsDeereApi2-${env}")
+  #getMachine(organization_id: ID!, machineId: ID!): Machine @function(name: "getMachine-${env}")
+  listFiles: [File] @function(name: "functionsDeereApi2-${env}")
+  listOrganizationFiles(organization_id: ID!): [File] @function(name: "functionsDeereApi2-${env}")
+  getFile(fileId: ID!): File @function(name: "functionsDeereApi2-${env}")
   #getLayer: String @function(name: "getFile-${env}")
-  uploadStreamFileWithNode: String @function(name: "uploadStreamFileWithNode-${env}")
 
 }
